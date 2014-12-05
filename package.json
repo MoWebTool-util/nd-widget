@@ -1,0 +1,36 @@
+{
+  "name": "nd-widget",
+  "version": "0.0.0",
+  "description": "Widget 是 UI 组件的基础类，约定了组件的基本生命周期，实现了一些通用功能。基于 Widget 可以构建出任何你想要的 Web 界面组件。",
+  "keywords": [],
+  "homepage": "",
+  "author": "crossjs <liwenfu@crossjs.com>",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "licenses": "MIT",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cmd-wrap": "^0.1.0",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-exec": "^0.4.6",
+    "matchdep": "^0.3.0"
+  },
+  "spm": {
+    "main": "index.js",
+    "dependencies": {
+      "jquery": "1.11.1",
+      "nd-base": "0.0.0",
+      "nd-daparser": "0.0.0"
+    },
+    "devDependencies": {
+      "expect.js": "0.3.1",
+      "sinon": "1.6.0"
+    }
+  }
+}
