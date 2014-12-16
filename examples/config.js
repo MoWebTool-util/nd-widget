@@ -7,7 +7,7 @@
   }
 
   seajs.config({
-    base: '/',
+    base: '../',
     alias: {},
     map: []
   });

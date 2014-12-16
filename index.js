@@ -113,14 +113,17 @@ function isEmptyAttrValue(o) {
   return o === null || o === undefined;
 }
 
-function trimRightUndefine(argus) {
-  for (var i = argus.length - 1; i >= 0; i--) {
+function trimRightUndefined(argus) {
+  var i = argus.length;
+
+  while (i--) {
     if (argus[i] === undefined) {
       argus.pop();
     } else {
       break;
     }
   }
+
   return argus;
 }
 
@@ -227,7 +230,7 @@ var Widget = Base.extend({
 
   // 注册事件代理
   delegateEvents: function(element, events, handler) {
-    var argus = trimRightUndefine(Array.prototype.slice.call(arguments));
+    var argus = trimRightUndefined(Array.prototype.slice.call(arguments));
     // widget.delegateEvents()
     if (argus.length === 0) {
       events = getEvents(this);
@@ -298,7 +301,7 @@ var Widget = Base.extend({
 
   // 卸载事件代理
   undelegateEvents: function(element, eventKey) {
-    var argus = trimRightUndefine(Array.prototype.slice.call(arguments));
+    var argus = trimRightUndefined(Array.prototype.slice.call(arguments));
 
     if (!eventKey) {
       eventKey = element;
