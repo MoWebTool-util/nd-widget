@@ -1,3 +1,5 @@
+'use strict';
+
 var $ = require('jquery');
 var expect = require('expect.js');
 var sinon = require('sinon');
@@ -6,6 +8,7 @@ var DAParser = require('nd-daparser');
 
 var Widget = require('../index');
 
+/*globals describe,it,afterEach*/
 
 describe('Widget', function() {
   var globalVar = {};
@@ -116,7 +119,7 @@ describe('Widget', function() {
       var spy1 = sinon.spy();
       var spy2 = sinon.spy();
       var spy3 = sinon.spy();
-      var event;
+      var event, that;
       var TestWidget = Widget.extend({
         events: {
           'click p': 'fn1',

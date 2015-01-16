@@ -130,7 +130,7 @@ function trimRightUndefined(argus) {
 var Widget = Base.extend({
 
   // config 中的这些键值会直接添加到实例上，转换成 properties
-  propsInAttrs: ['initElement', 'element', 'events'],
+  propsInAttrs: ['initElement', 'element', 'events', 'initProps', 'setup'],
 
   // 与 widget 关联的 DOM 元素
   element: null,
@@ -289,11 +289,9 @@ var Widget = Base.extend({
 
     // key 为 'event selector'
     for (var key in events) {
-      if (!events.hasOwnProperty(key)) {
-        continue;
+      if (events.hasOwnProperty(key)) {
+        handleEvents(events[key], this, parseEventKey(key, this));
       }
-
-      handleEvents(events[key], this, parseEventKey(key, this));
     }
 
     return this;
