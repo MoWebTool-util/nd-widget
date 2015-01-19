@@ -1,6 +1,10 @@
 # History
 
----
+---propsInAttrs
+
+## 0.1.0
+
+扩展 `propsInAttrs`。
 
 ## 0.0.0
 
