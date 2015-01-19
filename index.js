@@ -130,7 +130,7 @@ function trimRightUndefined(argus) {
 var Widget = Base.extend({
 
   // config 中的这些键值会直接添加到实例上，转换成 properties
-  propsInAttrs: ['initElement', 'element', 'events'],
+  propsInAttrs: ['initElement', 'element', 'events', 'initProps', 'setup'],
 
   // 与 widget 关联的 DOM 元素
   element: null,
@@ -157,7 +157,12 @@ var Widget = Base.extend({
     model: null,
 
     // 组件的默认父节点
-    parentNode: document.body
+    parentNode: document.body,
+
+    //用户自定义方法
+    insertInto: function(element, parentNode) {
+      element.appendTo(parentNode);
+    }
   },
 
   // 初始化方法，确定组件创建时的基本流程：
@@ -289,11 +294,9 @@ var Widget = Base.extend({
 
     // key 为 'event selector'
     for (var key in events) {
-      if (!events.hasOwnProperty(key)) {
-        continue;
+      if (events.hasOwnProperty(key)) {
+        handleEvents(events[key], this, parseEventKey(key, this));
       }
-
-      handleEvents(events[key], this, parseEventKey(key, this));
     }
 
     return this;
@@ -361,13 +364,14 @@ var Widget = Base.extend({
     if (parentNode && !isInDocument(this.element[0])) {
       // 隔离样式，添加统一的命名空间
       // https://github.com/aliceui/aliceui.org/issues/9
-      var outerBoxClass = this.constructor.outerBoxClass;
+      /*var outerBoxClass = this.constructor.outerBoxClass;
       if (outerBoxClass) {
         var outerBox = this._outerBox = $('<div></div>').addClass(outerBoxClass);
         outerBox.append(this.element).appendTo(parentNode);
       } else {
         this.element.appendTo(parentNode);
-      }
+      }*/
+      this.get('insertInto')(this.element, parentNode);
     }
 
     return this;
