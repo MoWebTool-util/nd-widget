@@ -371,7 +371,7 @@ var Widget = Base.extend({
       } else {
         this.element.appendTo(parentNode);
       }*/
-      this.get('insertInto')(this.element, parentNode);
+      this.get('insertInto').call(this, this.element, parentNode);
     }
 
     return this;
