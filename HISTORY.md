@@ -1,6 +1,8 @@
 # History
 
----propsInAttrs
+## 1.0.0
+
+支持插件。
 
 ## 0.1.0
 

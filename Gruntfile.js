@@ -1,19 +1,29 @@
+'use strict';
+
 module.exports = function(grunt) {
 
-  'use strict';
-
   // load all grunt tasks
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-
-  var pkg = grunt.file.readJSON('package.json');
+  require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
 
-    pkg: pkg,
+    server: {
+      develop: {
+        // src: 'examples/config.js.tpl',
+        // dest: 'examples/config.js',
+        options: {
+          config: false,
+          release: false
+        }
+      }
+    },
 
-    wrap: {
-      server: {
-        // use defaults
+    jsdoc: {
+      api: {
+        src: ['index.js', 'src/**/*.js'],
+        options: {
+          destination: 'doc'
+        }
       }
     },
 
@@ -27,16 +37,17 @@ module.exports = function(grunt) {
     exec: {
       'spm-publish': 'spm publish',
       'spm-test': 'spm test'
+    },
+
+    clean: {
+      doc: ['doc']
     }
 
   });
 
-  grunt.registerTask('test', ['jshint','exec:spm-test']);
-
+  grunt.registerTask('doc', ['clean:doc', 'jsdoc']);
+  grunt.registerTask('test', ['jshint', 'exec:spm-test']);
   grunt.registerTask('publish', ['test', 'exec:spm-publish']);
-
-  grunt.registerTask('server', ['wrap']);
-
   grunt.registerTask('default', ['server']);
 
 };

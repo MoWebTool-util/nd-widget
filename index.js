@@ -11,6 +11,7 @@
 var $ = require('jquery');
 var Base = require('nd-base');
 var DAParser = require('nd-daparser');
+var Plugins = require('nd-plugins');
 
 var AutoRender = require('./src/auto-render');
 
@@ -20,7 +21,6 @@ var DATA_WIDGET_CID = 'data-widget-cid';
 
 // 所有初始化过的 Widget 实例
 var cachedInstances = {};
-
 
 // Helpers
 // ------
@@ -128,6 +128,8 @@ function trimRightUndefined(argus) {
 }
 
 var Widget = Base.extend({
+  // 支持插件
+  Implements: [Plugins],
 
   // config 中的这些键值会直接添加到实例上，转换成 properties
   propsInAttrs: ['initElement', 'element', 'events', 'initProps', 'setup'],
