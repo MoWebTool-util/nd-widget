@@ -27,7 +27,8 @@
     "dependencies": {
       "jquery": "1.11.1",
       "nd-base": "0.0.1",
-      "nd-daparser": "0.0.0"
+      "nd-daparser": "0.0.0",
+      "nd-plugins": "1.0.0"
     },
     "devDependencies": {
       "expect.js": "0.3.1",
