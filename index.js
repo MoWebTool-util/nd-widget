@@ -186,6 +186,9 @@ var Widget = Base.extend({
     // 子类自定义的初始化
     this.setup();
 
+    // 插件初始化
+    this.initPlugins();
+
     // 保存实例信息
     this._stamp();
 
@@ -234,6 +237,10 @@ var Widget = Base.extend({
   // 负责 properties 的初始化，提供给子类覆盖
   initProps: function() {
   },
+
+  // 负责插件的初始化，由 nd-plugins 提供
+  // initPlugins: function() {
+  // },
 
   // 注册事件代理
   delegateEvents: function(element, events, handler) {
