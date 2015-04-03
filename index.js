@@ -131,6 +131,9 @@ var Widget = Base.extend({
   // 支持插件
   Implements: [Plugins],
 
+  // 插件列表
+  Plugins: [],
+
   // config 中的这些键值会直接添加到实例上，转换成 properties
   propsInAttrs: ['initElement', 'element', 'events', 'initProps', 'setup'],
 
@@ -164,7 +167,10 @@ var Widget = Base.extend({
     //用户自定义方法
     insertInto: function(element, parentNode) {
       element.appendTo(parentNode);
-    }
+    },
+
+    plugins: [],
+    pluginCfg: {}
   },
 
   // 初始化方法，确定组件创建时的基本流程：
