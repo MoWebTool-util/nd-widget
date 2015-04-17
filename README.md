@@ -1,4 +1,4 @@
-# nd-widget [![spm version](http://spmjs.io/badge/nd-widget)](http://spmjs.io/package/nd-widget)
+# nd-widget [![spm version](http://spm.crossjs.com/badge/nd-widget)](http://spm.crossjs.com/package/nd-widget)
 
 ---
 
@@ -13,6 +13,6 @@ $ spm install nd-widget --save
 ## 使用
 
 ```js
-var ndWidget = require('nd-widget');
-// use ndWidget
+var Widget = require('nd-widget');
+// use widget
 ```

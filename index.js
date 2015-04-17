@@ -22,9 +22,6 @@ var DATA_WIDGET_CID = 'data-widget-cid';
 // 所有初始化过的 Widget 实例
 var cachedInstances = {};
 
-// Helpers
-// ------
-
 var toString = Object.prototype.toString;
 var cidCounter = 0;
 
@@ -377,15 +374,6 @@ var Widget = Base.extend({
     // 插入到文档流中
     var parentNode = this.get('parentNode');
     if (parentNode && !isInDocument(this.element[0])) {
-      // 隔离样式，添加统一的命名空间
-      // https://github.com/aliceui/aliceui.org/issues/9
-      /*var outerBoxClass = this.constructor.outerBoxClass;
-      if (outerBoxClass) {
-        var outerBox = this._outerBox = $('<div></div>').addClass(outerBoxClass);
-        outerBox.append(this.element).appendTo(parentNode);
-      } else {
-        this.element.appendTo(parentNode);
-      }*/
       this.get('insertInto').call(this, this.element, parentNode);
     }
 
@@ -456,11 +444,7 @@ var Widget = Base.extend({
     if (this.element && this._isTemplate) {
       this.element.off();
       // 如果是 widget 生成的 element 则去除
-      if (this._outerBox) {
-        this._outerBox.remove();
-      } else {
-        this.element.remove();
-      }
+      this.element.remove();
     }
     this.element = null;
 
