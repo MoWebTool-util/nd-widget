@@ -186,11 +186,11 @@ var Widget = Base.extend({
     // 初始化 events
     this.delegateEvents();
 
-    // 子类自定义的初始化
-    this.setup();
-
     // 插件初始化
     this.initPlugins();
+
+    // 子类自定义的初始化
+    this.setup();
 
     // 保存实例信息
     this._stamp();
