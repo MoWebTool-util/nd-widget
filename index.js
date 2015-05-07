@@ -51,6 +51,11 @@ function ucfirst(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
 }
 
+// function ucfirst(str) {
+//   return str.replace(/(?:^|_)([a-zA-Z])/g, function(all, c){
+//     return c.toUpperCase();
+//   });
+// }
 
 var EVENT_KEY_SPLITTER = /^(\S+)\s*(.*)$/;
 var EXPRESSION_FLAG = /{{([^}]+)}}/g;
@@ -208,7 +213,7 @@ var Widget = Base.extend({
 
     // 解析 data-api 时，只考虑用户传入的 element，不考虑来自继承或从模板构建的
     if (element && element[0] && !AutoRender.isDataApiOff(element)) {
-      dataAttrsConfig = DAParser.parseElement(element);
+      dataAttrsConfig = DAParser.parseElement(element[0]);
     }
 
     return dataAttrsConfig;
