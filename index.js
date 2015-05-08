@@ -188,11 +188,11 @@ var Widget = Base.extend({
     this.parseElement();
     this.initProps();
 
-    // 初始化 events
-    this.delegateEvents();
-
     // 插件初始化
     this.initPlugins();
+
+    // 初始化 events
+    this.delegateEvents();
 
     // 子类自定义的初始化
     this.setup();
