@@ -1,3 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>index.js - Documentation</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module-Widget-Widget.html">Widget</a></li></ul><h3>Modules</h3><ul><li><a href="module-Widget.html">Widget</a><ul class='methods'><li data-type='method'><a href="module-Widget.html#~delegateEvents">delegateEvents</a></li><li data-type='method'><a href="module-Widget.html#~initialize">initialize</a></li><li data-type='method'><a href="module-Widget.html#~initProps">initProps</a></li><li data-type='method'><a href="module-Widget.html#~parseElement">parseElement</a></li><li data-type='method'><a href="module-Widget.html#~parseElementFromTemplate">parseElementFromTemplate</a></li><li data-type='method'><a href="module-Widget.html#~render">render</a></li><li data-type='method'><a href="module-Widget.html#~setup">setup</a></li><li data-type='method'><a href="module-Widget.html#~undelegateEvents">undelegateEvents</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module Widget
+ * @author crossjs &lt;liwenfu@crossjs.com>
+ */
+
 'use strict';
 
 // Widget
@@ -40,7 +80,7 @@ function isFunction(val) {
 // Zepto 上没有 contains 方法
 var contains = $.contains || function(a, b) {
   //noinspection JSBitwiseOperatorUsage
-  return !!(a.compareDocumentPosition(b) & 16);
+  return !!(a.compareDocumentPosition(b) &amp; 16);
 };
 
 function isInDocument(element) {
@@ -100,7 +140,7 @@ function parseEventKey(eventKey, widget) {
   // 当没有 selector 时，需要设置为 undefined，以使得 zepto 能正确转换为 bind
   var selector = match[2] || undefined;
 
-  if (selector && selector.indexOf('{{') > -1) {
+  if (selector &amp;&amp; selector.indexOf('{{') > -1) {
     selector = parseExpressionInEventKey(selector, widget);
   }
 
@@ -129,28 +169,54 @@ function trimRightUndefined(argus) {
   return argus;
 }
 
+/**
+ * @class Widget
+ * @extends {Base}
+ * @implements {Plugins}
+ */
 var Widget = Base.extend({
-  // 支持插件
+
+  /**
+   * 实现的接口
+   * @type {Array}
+   */
   Implements: [Plugins],
 
-  // 插件列表
+  /**
+   * 引入的插件
+   * @type {Array}
+   */
   Plugins: [],
 
-  // config 中的这些键值会直接添加到实例上，转换成 properties
+  /**
+   * 初始化时可以通过 config 参数传入的属性
+   * config 中的这些键值会直接添加到实例上，转换成 properties
+   * @type {Array}
+   */
   propsInAttrs: ['initElement', 'element', 'events', 'initProps', 'setup'],
 
-  // 与 widget 关联的 DOM 元素
+  /**
+   * 与 widget 关联的 DOM 元素
+   * @type {Element}
+   */
   element: null,
 
-  // 事件代理，格式为：
-  //   {
-  //     'mousedown .title': 'edit',
-  //     'click {{attrs.saveButton}}': 'save'
-  //     'click .open': function(ev) { ... }
-  //   }
+  /**
+   * 事件代理，绑定在 element 上
+   * @type {Object}
+   * @example &lt;caption>example of event&lt;/caption>
+   *  {
+   *    'mousedown .title': 'edit',
+   *    'click {{attrs.saveButton}}': 'save'
+   *    'click .open': function(ev) { ... }
+   *  }
+   */
   events: null,
 
-  // 属性列表
+  /**
+   * 可配置项
+   * @type {Object}
+   */
   attrs: {
     // 基本属性
     id: null,
@@ -158,7 +224,7 @@ var Widget = Base.extend({
     style: null,
 
     // 默认模板
-    template: '<div></div>',
+    template: '&lt;div>&lt;/div>',
 
     // 默认数据模型
     model: null,
@@ -175,8 +241,10 @@ var Widget = Base.extend({
     pluginCfg: {}
   },
 
-  // 初始化方法，确定组件创建时的基本流程：
-  // 初始化 attrs --》 初始化 props --》 初始化 events --》 子类的初始化
+  /**
+   * 初始化方法，确定组件创建时的基本流程：
+   * 初始化 attrs --> 初始化 props --> 初始化 events --> 子类的初始化
+   */
   initialize: function(config) {
     this.cid = uniqueCid();
 
@@ -201,10 +269,15 @@ var Widget = Base.extend({
     this._stamp();
 
     // 是否由 template 初始化
-    this._isTemplate = !(config && config.element);
+    this._isTemplate = !(config &amp;&amp; config.element);
   },
 
-  // 解析通过 data-attr 设置的 api
+  /**
+   * 解析通过 data-attr 设置的 api
+   * @param  {Object} config
+   * @return {Object}        new config
+   * @private
+   */
   _parseDataAttrsConfig: function(config) {
     var element, dataAttrsConfig;
     if (config) {
@@ -212,14 +285,16 @@ var Widget = Base.extend({
     }
 
     // 解析 data-api 时，只考虑用户传入的 element，不考虑来自继承或从模板构建的
-    if (element && element[0] && !AutoRender.isDataApiOff(element)) {
+    if (element &amp;&amp; element[0] &amp;&amp; !AutoRender.isDataApiOff(element)) {
       dataAttrsConfig = DAParser.parseElement(element[0]);
     }
 
     return dataAttrsConfig;
   },
 
-  // 构建 this.element
+  /**
+   * 构建 this.element
+   */
   parseElement: function() {
     var element = this.element;
 
@@ -237,12 +312,16 @@ var Widget = Base.extend({
     }
   },
 
-  // 从模板中构建 this.element
+  /**
+   * 从模板中构建 this.element
+   */
   parseElementFromTemplate: function() {
     this.element = $(this.get('template'));
   },
 
-  // 负责 properties 的初始化，提供给子类覆盖
+  /**
+   * 负责 properties 的初始化，提供给子类覆盖
+   */
   initProps: function() {
   },
 
@@ -250,7 +329,9 @@ var Widget = Base.extend({
   // initPlugins: function() {
   // },
 
-  // 注册事件代理
+  /**
+   * 注册事件代理
+   */
   delegateEvents: function(element, events, handler) {
     var argus = trimRightUndefined(Array.prototype.slice.call(arguments));
     // widget.delegateEvents()
@@ -283,7 +364,7 @@ var Widget = Base.extend({
     }
 
     // 'click p' => {'click p': handler}
-    if (isString(events) && isFunction(handler)) {
+    if (isString(events) &amp;&amp; isFunction(handler)) {
       var o = {};
       o[events] = handler;
       events = o;
@@ -319,7 +400,9 @@ var Widget = Base.extend({
     return this;
   },
 
-  // 卸载事件代理
+  /**
+   * 卸载事件代理
+   */
   undelegateEvents: function(element, eventKey) {
     var argus = trimRightUndefined(Array.prototype.slice.call(arguments));
 
@@ -333,12 +416,12 @@ var Widget = Base.extend({
     if (argus.length === 0) {
       var type = DELEGATE_EVENT_NS + this.cid;
 
-      this.element && this.element.off(type);
+      this.element &amp;&amp; this.element.off(type);
 
       // 卸载所有外部传入的 element
       if (this._delegateElements) {
         for (var de in this._delegateElements) {
-          this._delegateElements.hasOwnProperty(de) &&
+          this._delegateElements.hasOwnProperty(de) &amp;&amp;
             this._delegateElements[de].off(type);
         }
       }
@@ -349,7 +432,7 @@ var Widget = Base.extend({
       // 卸载 this.element
       // .undelegateEvents(events)
       if (!element) {
-        this.element && this.element.off(args.type, args.selector);
+        this.element &amp;&amp; this.element.off(args.type, args.selector);
       }
 
       // 卸载外部 element
@@ -361,15 +444,18 @@ var Widget = Base.extend({
     return this;
   },
 
-  // 提供给子类覆盖的初始化方法
+  /**
+   * 提供给子类覆盖的初始化方法
+   */
   setup: function() {
   },
 
-  // 将 widget 渲染到页面上
-  // 渲染不仅仅包括插入到 DOM 树中，还包括样式渲染等
-  // 约定：子类覆盖时，需保持 `return this`
+  /**
+   * 将 widget 渲染到页面上
+   * 渲染不仅仅包括插入到 DOM 树中，还包括样式渲染等
+   * 约定：子类覆盖时，需保持 `return this`
+   */
   render: function() {
-
     // 让渲染相关属性的初始值生效，并绑定到 change 事件
     if (!this.rendered) {
       this._renderAndBindAttrs();
@@ -378,7 +464,7 @@ var Widget = Base.extend({
 
     // 插入到文档流中
     var parentNode = this.get('parentNode');
-    if (parentNode && !isInDocument(this.element[0])) {
+    if (parentNode &amp;&amp; !isInDocument(this.element[0])) {
       this.get('insertInto').call(this, this.element, parentNode);
     }
 
@@ -446,7 +532,7 @@ var Widget = Base.extend({
     delete cachedInstances[this.cid];
 
     // For memory leak
-    if (this.element && this._isTemplate) {
+    if (this.element &amp;&amp; this._isTemplate) {
       this.element.off();
       // 如果是 widget 生成的 element 则去除
       this.element.remove();
@@ -469,7 +555,7 @@ Widget.query = function(selector) {
   var element = $(selector).eq(0);
   var cid;
 
-  element && (cid = element.attr(DATA_WIDGET_CID));
+  element &amp;&amp; (cid = element.attr(DATA_WIDGET_CID));
   return cachedInstances[cid];
 };
 
@@ -479,3 +565,22 @@ Widget.autoRenderAll = AutoRender.autoRenderAll;
 Widget.StaticsWhiteList = ['autoRender'];
 
 module.exports = Widget;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Sun Oct 11 2015 02:02:56 GMT+0800 (CST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
