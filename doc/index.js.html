@@ -1,6 +1,41 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>index.js - Documentation</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module-Widget-Widget.html">Widget</a></li></ul><h3>Modules</h3><ul><li><a href="module-Widget.html">Widget</a><ul class='methods'><li data-type='method'><a href="module-Widget.html#~delegateEvents">delegateEvents</a></li><li data-type='method'><a href="module-Widget.html#~initialize">initialize</a></li><li data-type='method'><a href="module-Widget.html#~initProps">initProps</a></li><li data-type='method'><a href="module-Widget.html#~parseElement">parseElement</a></li><li data-type='method'><a href="module-Widget.html#~parseElementFromTemplate">parseElementFromTemplate</a></li><li data-type='method'><a href="module-Widget.html#~render">render</a></li><li data-type='method'><a href="module-Widget.html#~setup">setup</a></li><li data-type='method'><a href="module-Widget.html#~undelegateEvents">undelegateEvents</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">index.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @module Widget
- * @author crossjs <liwenfu@crossjs.com>
+ * @author crossjs &lt;liwenfu@crossjs.com>
  */
 
 'use strict';
@@ -45,7 +80,7 @@ function isFunction(val) {
 // Zepto 上没有 contains 方法
 var contains = $.contains || function(a, b) {
   //noinspection JSBitwiseOperatorUsage
-  return !!(a.compareDocumentPosition(b) & 16);
+  return !!(a.compareDocumentPosition(b) &amp; 16);
 };
 
 function isInDocument(element) {
@@ -105,7 +140,7 @@ function parseEventKey(eventKey, widget) {
   // 当没有 selector 时，需要设置为 undefined，以使得 zepto 能正确转换为 bind
   var selector = match[2] || undefined;
 
-  if (selector && selector.indexOf('{{') > -1) {
+  if (selector &amp;&amp; selector.indexOf('{{') > -1) {
     selector = parseExpressionInEventKey(selector, widget);
   }
 
@@ -169,7 +204,7 @@ var Widget = Base.extend({
   /**
    * 事件代理，绑定在 element 上
    * @type {Object}
-   * @example <caption>example of event</caption>
+   * @example &lt;caption>example of event&lt;/caption>
    *  {
    *    'mousedown .title': 'edit',
    *    'click {{attrs.saveButton}}': 'save'
@@ -189,7 +224,7 @@ var Widget = Base.extend({
     style: null,
 
     // 默认模板
-    template: '<div></div>',
+    template: '&lt;div>&lt;/div>',
 
     // 默认数据模型
     model: null,
@@ -234,7 +269,7 @@ var Widget = Base.extend({
     this._stamp();
 
     // 是否由 template 初始化
-    this._isTemplate = !(config && config.element);
+    this._isTemplate = !(config &amp;&amp; config.element);
   },
 
   /**
@@ -250,7 +285,7 @@ var Widget = Base.extend({
     }
 
     // 解析 data-api 时，只考虑用户传入的 element，不考虑来自继承或从模板构建的
-    if (element && element[0] && !AutoRender.isDataApiOff(element)) {
+    if (element &amp;&amp; element[0] &amp;&amp; !AutoRender.isDataApiOff(element)) {
       dataAttrsConfig = DAParser.parseElement(element[0]);
     }
 
@@ -329,7 +364,7 @@ var Widget = Base.extend({
     }
 
     // 'click p' => {'click p': handler}
-    if (isString(events) && isFunction(handler)) {
+    if (isString(events) &amp;&amp; isFunction(handler)) {
       var o = {};
       o[events] = handler;
       events = o;
@@ -381,12 +416,12 @@ var Widget = Base.extend({
     if (argus.length === 0) {
       var type = DELEGATE_EVENT_NS + this.cid;
 
-      this.element && this.element.off(type);
+      this.element &amp;&amp; this.element.off(type);
 
       // 卸载所有外部传入的 element
       if (this._delegateElements) {
         for (var de in this._delegateElements) {
-          this._delegateElements.hasOwnProperty(de) &&
+          this._delegateElements.hasOwnProperty(de) &amp;&amp;
             this._delegateElements[de].off(type);
         }
       }
@@ -397,7 +432,7 @@ var Widget = Base.extend({
       // 卸载 this.element
       // .undelegateEvents(events)
       if (!element) {
-        this.element && this.element.off(args.type, args.selector);
+        this.element &amp;&amp; this.element.off(args.type, args.selector);
       }
 
       // 卸载外部 element
@@ -429,7 +464,7 @@ var Widget = Base.extend({
 
     // 插入到文档流中
     var parentNode = this.get('parentNode');
-    if (parentNode && !isInDocument(this.element[0])) {
+    if (parentNode &amp;&amp; !isInDocument(this.element[0])) {
       this.get('insertInto').call(this, this.element, parentNode);
     }
 
@@ -497,7 +532,7 @@ var Widget = Base.extend({
     delete cachedInstances[this.cid];
 
     // For memory leak
-    if (this.element && this._isTemplate) {
+    if (this.element &amp;&amp; this._isTemplate) {
       this.element.off();
       // 如果是 widget 生成的 element 则去除
       this.element.remove();
@@ -520,7 +555,7 @@ Widget.query = function(selector) {
   var element = $(selector).eq(0);
   var cid;
 
-  element && (cid = element.attr(DATA_WIDGET_CID));
+  element &amp;&amp; (cid = element.attr(DATA_WIDGET_CID));
   return cachedInstances[cid];
 };
 
@@ -530,3 +565,22 @@ Widget.autoRenderAll = AutoRender.autoRenderAll;
 Widget.StaticsWhiteList = ['autoRender'];
 
 module.exports = Widget;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a> on Sun Oct 11 2015 01:17:14 GMT+0800 (CST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
