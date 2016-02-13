@@ -10,10 +10,7 @@
 
 var $ = require('jquery');
 var Base = require('nd-base');
-var DAParser = require('nd-daparser');
 var Plugins = require('nd-plugins');
-
-var AutoRender = require('./src/auto-render');
 
 var DELEGATE_EVENT_NS = '.delegate-events-';
 var ON_RENDER = '_onRender';
@@ -181,8 +178,7 @@ var Widget = Base.extend({
     this.cid = uniqueCid();
 
     // 初始化 attrs
-    var dataAttrsConfig = this._parseDataAttrsConfig(config);
-    Widget.superclass.initialize.call(this, config ? $.extend(dataAttrsConfig, config) : dataAttrsConfig);
+    Widget.superclass.initialize.call(this, config);
 
     // 初始化 props
     this.parseElement();
@@ -202,21 +198,6 @@ var Widget = Base.extend({
 
     // 是否由 template 初始化
     this._isTemplate = !(config && config.element);
-  },
-
-  // 解析通过 data-attr 设置的 api
-  _parseDataAttrsConfig: function(config) {
-    var element, dataAttrsConfig;
-    if (config) {
-      element = config.initElement ? $(config.initElement) : $(config.element);
-    }
-
-    // 解析 data-api 时，只考虑用户传入的 element，不考虑来自继承或从模板构建的
-    if (element && element[0] && !AutoRender.isDataApiOff(element)) {
-      dataAttrsConfig = DAParser.parseElement(element[0]);
-    }
-
-    return dataAttrsConfig;
   },
 
   // 构建 this.element
@@ -472,10 +453,5 @@ Widget.query = function(selector) {
   element && (cid = element.attr(DATA_WIDGET_CID));
   return cachedInstances[cid];
 };
-
-
-Widget.autoRender = AutoRender.autoRender;
-Widget.autoRenderAll = AutoRender.autoRenderAll;
-Widget.StaticsWhiteList = ['autoRender'];
 
 module.exports = Widget;
