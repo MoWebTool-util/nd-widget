@@ -1,10 +1,17 @@
 {
   "name": "nd-widget",
-  "version": "0.1.1",
+  "version": "3.0.0",
   "description": "Widget 是 UI 组件的基础类，约定了组件的基本生命周期，实现了一些通用功能。基于 Widget 可以构建出任何你想要的 Web 界面组件。",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-widget",
-  "author": "crossjs <liwenfu@crossjs.com>",
+  "author": {
+    "name": "crossjs",
+    "email": "liwenfu@crossjs.com"
+  },
+  "scripts": {
+    "test": "mocha --bail --timeout 200 --slow 99999 tests/**/*-spec.js",
+    "coverage": "node_modules/isparta/bin/isparta cover node_modules/mocha/bin/_mocha -- --bail --timeout 200 --slow 99999 -R dot tests/**/*-spec.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ndfront/nd-widget.git"
@@ -13,23 +20,16 @@
     "url": "https://github.com/ndfront/nd-widget/issues"
   },
   "licenses": "MIT",
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-exec": "^0.4.6",
-    "grunt-spm-server": "^0.0.1",
-    "matchdep": "^0.3.0"
+  "main": "index.js",
+  "dependencies": {
+    "jquery": "^1.11.1",
+    "nd-base": "^3.0.0",
+    "nd-plugins": "^3.0.0"
   },
-  "spm": {
-    "main": "index.js",
-    "dependencies": {
-      "jquery": "1.11.1",
-      "nd-base": "0.0.1",
-      "nd-daparser": "0.0.0"
-    },
-    "devDependencies": {
-      "expect.js": "0.3.1",
-      "sinon": "1.6.0"
-    }
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "isparta": "^4.0.0",
+    "mocha": "^2.4.5",
+    "sinon": "^2.0.0-pre"
   }
 }

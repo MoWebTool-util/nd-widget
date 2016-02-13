@@ -4,8 +4,6 @@ var $ = require('jquery');
 var expect = require('expect.js');
 var sinon = require('sinon');
 
-var DAParser = require('nd-daparser');
-
 var Widget = require('../index');
 
 /*globals describe,it,afterEach*/
@@ -98,20 +96,6 @@ describe('Widget', function() {
     expect(widget.element[0].tagName).to.equal('SPAN');
 
     div.remove();
-  });
-
-  it('parse data attrs', function() {
-
-    // 默认解析 data-api
-    var widget = globalVar.widget = new Widget();
-
-    // 可通过选项关闭 data-api
-    document.body.setAttribute('data-api', 'off');
-
-    var dataset = DAParser.parseElement(widget.element);
-    delete dataset['widgetCid'];
-
-    expect(dataset).to.eql({});
   });
 
   describe('delegateEvents / undelegateEvents', function() {
@@ -499,11 +483,11 @@ describe('Widget', function() {
   });
 
   it('ignore null element during delegating events', function() {
-    var counter = 0;
+    // var counter = 0;
 
-    function incr() {
-      counter++;
-    }
+    // function incr() {
+    //   counter++;
+    // }
 
     var A = Widget.extend({
       attrs: {
@@ -626,7 +610,7 @@ describe('Widget', function() {
     str2Spy.reset();
 
     // 测试 onXxx
-    var b = globalVar.b = new A({
+    globalVar.b = new A({
       bool: null,
       str2: ''
     }).render();
@@ -656,29 +640,6 @@ describe('Widget', function() {
 
     a.render();
     expect(counter).to.equal(1);
-  });
-
-  it('statics white list', function() {
-
-    var A = Widget.extend();
-
-    expect(typeof A.autoRender).to.equal('function');
-    expect(typeof A.autoRenderAll).to.equal('undefined');
-  });
-
-  it('data attr api', function() {
-    var div = $('<div id="data-attr-api-test" data-a=1 data-b="b" data-arr="[1,2,3]" data-c="true" data-d=\'{"num": 1, "str": "s", "bool": true}\'></div>')
-        .appendTo(document.body);
-
-    var t = globalVar.t = new Widget({ element: '#data-attr-api-test', b: 'b2' });
-
-    expect(t.get('a')).to.equal(1);
-    expect(t.get('b')).to.equal('b2');
-    expect(t.get('c')).to.equal(true);
-    expect(t.get('d').num).to.equal(1);
-    expect(t.get('d').str).to.equal('s');
-    expect(t.get('d').bool).to.equal(true);
-    expect(t.get('arr')).to.eql([1, 2, 3]);
   });
 
   it('onXx setter in attrs', function() {
@@ -846,21 +807,6 @@ describe('Widget', function() {
     var test = new Test();
     test.set('a', 2);
     expect(spy.calledOnce).to.be.ok();
-  });
-
-  it('outerBox', function() {
-    var TestWidget = require('./test-widget');
-    var container = $('<div id="testContainer"></div>').appendTo(document.body);
-    var widget = new TestWidget({
-      parentNode: '#testContainer'
-    }).render();
-    expect(widget.element.parent()[0]).to.be.ok();
-    expect(widget.element.parent()[0]).to.be(container.children()[0]);
-    expect(widget.element.parent().hasClass('arale-text-widget-1_0_0')).to.be.ok();
-
-    widget.destroy();
-    expect($('.arale-text-widget-1_0_0')[0]).not.to.be.ok();
-    container.remove();
   });
 
   it('set call onRender', function() {

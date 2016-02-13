@@ -10,9 +10,7 @@
 
 var $ = require('jquery');
 var Base = require('nd-base');
-var DAParser = require('nd-daparser');
-
-var AutoRender = require('./src/auto-render');
+var Plugins = require('nd-plugins');
 
 var DELEGATE_EVENT_NS = '.delegate-events-';
 var ON_RENDER = '_onRender';
@@ -20,10 +18,6 @@ var DATA_WIDGET_CID = 'data-widget-cid';
 
 // 所有初始化过的 Widget 实例
 var cachedInstances = {};
-
-
-// Helpers
-// ------
 
 var toString = Object.prototype.toString;
 var cidCounter = 0;
@@ -54,6 +48,11 @@ function ucfirst(str) {
   return str.charAt(0).toUpperCase() + str.substring(1);
 }
 
+// function ucfirst(str) {
+//   return str.replace(/(?:^|_)([a-zA-Z])/g, function(all, c){
+//     return c.toUpperCase();
+//   });
+// }
 
 var EVENT_KEY_SPLITTER = /^(\S+)\s*(.*)$/;
 var EXPRESSION_FLAG = /{{([^}]+)}}/g;
@@ -128,6 +127,11 @@ function trimRightUndefined(argus) {
 }
 
 var Widget = Base.extend({
+  // 支持插件
+  Implements: [Plugins],
+
+  // 插件列表
+  Plugins: [],
 
   // config 中的这些键值会直接添加到实例上，转换成 properties
   propsInAttrs: ['initElement', 'element', 'events', 'initProps', 'setup'],
@@ -162,7 +166,10 @@ var Widget = Base.extend({
     //用户自定义方法
     insertInto: function(element, parentNode) {
       element.appendTo(parentNode);
-    }
+    },
+
+    plugins: [],
+    pluginCfg: {}
   },
 
   // 初始化方法，确定组件创建时的基本流程：
@@ -171,12 +178,14 @@ var Widget = Base.extend({
     this.cid = uniqueCid();
 
     // 初始化 attrs
-    var dataAttrsConfig = this._parseDataAttrsConfig(config);
-    Widget.superclass.initialize.call(this, config ? $.extend(dataAttrsConfig, config) : dataAttrsConfig);
+    Widget.superclass.initialize.call(this, config);
 
     // 初始化 props
     this.parseElement();
     this.initProps();
+
+    // 插件初始化
+    this.initPlugins();
 
     // 初始化 events
     this.delegateEvents();
@@ -189,21 +198,6 @@ var Widget = Base.extend({
 
     // 是否由 template 初始化
     this._isTemplate = !(config && config.element);
-  },
-
-  // 解析通过 data-attr 设置的 api
-  _parseDataAttrsConfig: function(config) {
-    var element, dataAttrsConfig;
-    if (config) {
-      element = config.initElement ? $(config.initElement) : $(config.element);
-    }
-
-    // 解析 data-api 时，只考虑用户传入的 element，不考虑来自继承或从模板构建的
-    if (element && element[0] && !AutoRender.isDataApiOff(element)) {
-      dataAttrsConfig = DAParser.parseElement(element);
-    }
-
-    return dataAttrsConfig;
   },
 
   // 构建 this.element
@@ -232,6 +226,10 @@ var Widget = Base.extend({
   // 负责 properties 的初始化，提供给子类覆盖
   initProps: function() {
   },
+
+  // 负责插件的初始化，由 nd-plugins 提供
+  // initPlugins: function() {
+  // },
 
   // 注册事件代理
   delegateEvents: function(element, events, handler) {
@@ -362,15 +360,6 @@ var Widget = Base.extend({
     // 插入到文档流中
     var parentNode = this.get('parentNode');
     if (parentNode && !isInDocument(this.element[0])) {
-      // 隔离样式，添加统一的命名空间
-      // https://github.com/aliceui/aliceui.org/issues/9
-      /*var outerBoxClass = this.constructor.outerBoxClass;
-      if (outerBoxClass) {
-        var outerBox = this._outerBox = $('<div></div>').addClass(outerBoxClass);
-        outerBox.append(this.element).appendTo(parentNode);
-      } else {
-        this.element.appendTo(parentNode);
-      }*/
       this.get('insertInto').call(this, this.element, parentNode);
     }
 
@@ -441,11 +430,7 @@ var Widget = Base.extend({
     if (this.element && this._isTemplate) {
       this.element.off();
       // 如果是 widget 生成的 element 则去除
-      if (this._outerBox) {
-        this._outerBox.remove();
-      } else {
-        this.element.remove();
-      }
+      this.element.remove();
     }
     this.element = null;
 
@@ -468,10 +453,5 @@ Widget.query = function(selector) {
   element && (cid = element.attr(DATA_WIDGET_CID));
   return cachedInstances[cid];
 };
-
-
-Widget.autoRender = AutoRender.autoRender;
-Widget.autoRenderAll = AutoRender.autoRenderAll;
-Widget.StaticsWhiteList = ['autoRender'];
 
 module.exports = Widget;
