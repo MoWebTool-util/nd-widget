@@ -1,6 +1,6 @@
 {
   "name": "nd-widget",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Widget 是 UI 组件的基础类，约定了组件的基本生命周期，实现了一些通用功能。基于 Widget 可以构建出任何你想要的 Web 界面组件。",
   "keywords": [],
   "homepage": "https://github.com/ndfront/nd-widget",
@@ -22,9 +22,9 @@
   "licenses": "MIT",
   "main": "index.js",
   "dependencies": {
-    "jquery": "^1.11.1",
-    "nd-base": "^3.0.0",
-    "nd-plugins": "^3.0.0"
+    "nd-base": "^3.0.1",
+    "nd-plugins": "^3.0.1",
+    "nd-jquery": "^2.2.1"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",

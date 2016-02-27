@@ -8,7 +8,7 @@
 // fork from:
 //  - https://github.com/aralejs/widget/blob/master/src/widget.js
 
-var $ = require('jquery');
+var $ = require('nd-jquery');
 var Base = require('nd-base');
 var Plugins = require('nd-plugins');
 
