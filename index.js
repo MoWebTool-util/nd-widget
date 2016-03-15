@@ -232,11 +232,13 @@ var Widget = Base.extend({
     // 初始化 attrs
     Widget.superclass.initialize.call(this, this._parseDataAttrsConfig(config));
 
-    // 初始化 props
+    // 初始化 element
     this.parseElement();
+
+    // 初始化 props
     this.initProps();
 
-    // 插件初始化
+    // 初始化插件系统
     this.initPlugins();
 
     // 初始化 events
